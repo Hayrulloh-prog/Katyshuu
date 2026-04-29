@@ -1,4 +1,4 @@
-# Көзөмөл - Employee Attendance Tracking System
+# Катышуу - Employee Attendance Tracking System
 
 A comprehensive employee attendance tracking system with QR code functionality, built for modern businesses.
 
