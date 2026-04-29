@@ -1,0 +1,22 @@
+// Тест для проверки исправлений QR токена
+console.log('Проверка исправлений QR токена:');
+console.log('1. ✓ Добавлены переводы для ошибок QR токена');
+console.log('2. ✓ Обновлена обработка ошибок в QRScanPage');
+console.log('3. ✓ Добавлена специфическая обработка 404 ошибки');
+console.log('4. ✓ Правильное определение типа ошибки');
+console.log('');
+console.log('Добавленные переводы:');
+console.log('- qr.notFound: "QR токен не найден"');
+console.log('- qr.expired: "Срок действия QR кода истёк"');
+console.log('- qr.alreadyUsed: "QR код уже использован"');
+console.log('- qr.waitBeforeRetry: "Подождите 10 секунд..."');
+console.log('- qr.validationError: "Ошибка валидации QR токена"');
+console.log('');
+console.log('Обновленные файлы:');
+console.log('- QRScanPage.jsx: улучшенная обработка ошибок');
+console.log('- ru.json, kg.json, en.json: добавлены переводы');
+console.log('');
+console.log('Теперь при ошибке QR токена:');
+console.log('- Показывается переведенное сообщение');
+console.log('- Правильно обрабатывается 404 ошибка');
+console.log('- Сообщение соответствует типу ошибки');

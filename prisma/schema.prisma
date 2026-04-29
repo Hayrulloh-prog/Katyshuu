@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Manager {
+  id                   Int        @id @default(autoincrement())
+  firstName            String
+  lastName             String
+  phone                String     @unique
+  login                String     @unique
+  password             String
+  isActive             Boolean    @default(true)
+  tariffId             Int
+  maxEmployees         Int
+  registrationLatitude Float
+  registrationLongitude Float
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+  lastActivatedAt      DateTime?
+  strictDeviceCheck    Boolean    @default(false)
+  employees            Employee[]
+  tariff               Tariff     @relation(fields: [tariffId], references: [id])
+  qrTokens             QrToken[]
+  cycles               Cycle[]@@map("managers")
+}
+
+model Employee {
+  id                 Int          @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  phone              String
+  login              String
+  email              String
+  password           String
+  googleId           String?
+  appleId            String?
+  department         String?
+  position           String?
+  isActive           Boolean      @default(true)
+  managerId          Int
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  deviceFingerprints String[]
+  deviceModel        String?
+  attendance         Attendance[]
+  attendanceHistory  AttendanceHistory[]
+  cycles             Cycle[]
+  manager            Manager      @relation(fields: [managerId], references: [id])// Уникальность только в пределах одного менеджера
+  @@unique([managerId, email])
+  @@unique([managerId, phone])
+  @@unique([managerId, login])
+  @@unique([managerId, googleId])
+  @@unique([managerId, appleId])
+  @@map("employees")
+}
+
+model Attendance {
+  id                Int       @id @default(autoincrement())
+  employeeId        Int
+  checkInTime       DateTime?
+  checkOutTime      DateTime?
+  date              DateTime  @default(now())
+  ipAddress         String?
+  location          String?
+  deviceFingerprint String?
+  isForeignDevice   Boolean   @default(false)
+  actualScannerName String?
+  createdAt         DateTime  @default(now())
+  employee          Employee  @relation(fields: [employeeId], references: [id])
+  historyRecords    AttendanceHistory[]@@index([employeeId, date])
+  @@map("attendance_logs")
+}
+
+
+model AttendanceHistory {
+  id                Int       @id @default(autoincrement())
+  employeeId        Int
+  checkInTime       DateTime
+  checkOutTime      DateTime?
+  date              DateTime  @default(now())
+  ipAddress         String?
+  location          String?
+  deviceFingerprint String?
+  isForeignDevice   Boolean   @default(false)
+  actualScannerName String?
+  createdAt         DateTime  @default(now())
+  employee          Employee  @relation(fields: [employeeId], references: [id])
+  originalRecord    Attendance? @relation(fields: [originalRecordId], references: [id])
+  originalRecordId  Int?@@map("attendance_history")
+}
+
+model QrToken {
+  id        Int       @id @default(autoincrement())
+  token     String    @unique
+  managerId Int?
+  isUsed    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
+  type      String
+  manager   Manager?  @relation(fields: [managerId], references: [id])@@map("qr_tokens")
+}
+
+model Tariff {
+  id           Int       @id @default(autoincrement())
+  name         String
+  duration     Int
+  maxEmployees Int
+  price        Float
+  createdAt    DateTime  @default(now())
+  managers     Manager[]@@map("tariffs")
+}
+
+model LoginAttempt {
+  id           Int       @id @default(autoincrement())
+  ipAddress    String
+  login        String
+  attempts     Int       @default(1)
+  lastAttempt  DateTime  @default(now())
+  blockedUntil DateTime?@@map("login_attempts")
+}
+
+model Cycle {
+  id                Int       @id @default(autoincrement())
+  name              String     @unique
+  startDate         DateTime   @default(now())
+  endDate           DateTime?
+  isActive          Boolean    @default(true)
+  managerId         Int
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  employees         Employee[]
+  manager           Manager    @relation(fields: [managerId], references: [id])@@map("cycles")
+}

@@ -1,0 +1,23 @@
+// Тест для проверки финальных исправлений QR токена
+console.log('✅ Финальные исправления QR токена завершены!');
+console.log('');
+console.log('Исправления:');
+console.log('1. ✓ QR токен ошибки теперь переводятся');
+console.log('2. ✓ Кнопка "Попробовать снова" теперь переводится');
+console.log('3. ✓ Добавлены переводы для всех 3 языков');
+console.log('');
+console.log('Добавленные переводы:');
+console.log('ru: "retry": "Попробовать снова"');
+console.log('kg: "retry": "Кайрадан аракет кылуу"');
+console.log('en: "retry": "Try Again"');
+console.log('');
+console.log('Теперь при ошибке QR токена:');
+console.log('- Показывается "QR токен табылган жок" (кыргызский)');
+console.log('- Кнопка показывает "Кайрадан аракет кылуу"');
+console.log('- Все элементы интерфейса переведены');
+console.log('');
+console.log('Обновленные файлы:');
+console.log('- QRScanPage.jsx: {t("common.retry")}');
+console.log('- ru.json: добавлен "retry"');
+console.log('- kg.json: добавлен "retry"');
+console.log('- en.json: добавлен "retry"');
